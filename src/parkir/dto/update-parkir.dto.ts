@@ -1,10 +1,11 @@
+import { IsOptional, IsInt } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateParkirDto } from './create-parkir.dto';
-import { IsNumber, IsString } from 'class-validator';
-import { IsInt, Min } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class UpdateParkirDto extends PartialType(CreateParkirDto) {
-  @IsInt({ message: 'Durasi harus berupa angka' })
-  @Min(1, { message: 'Durasi harus lebih dari 0' })
-  durasi: number;
+    @IsOptional()
+    @Transform(({ value }) => parseInt(value, 10))
+    @IsInt()
+    durasi?: number;
 }

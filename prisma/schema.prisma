@@ -15,14 +15,12 @@ datasource db {
 
 model Parkir {
   id             Int        @id @default(autoincrement())
-  plat_nomor     String     @db.VarChar(50)
+  plat_nomor     String
   jenis_kendaraan JenisKendaraan
   durasi         Int
   total          Int
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
-
-  @@map("parkir")
 }
 
 enum JenisKendaraan {
