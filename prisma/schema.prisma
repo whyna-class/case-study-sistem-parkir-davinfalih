@@ -13,17 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Parkir {
-  id             Int        @id @default(autoincrement())
-  plat_nomor     String
-  jenis_kendaraan JenisKendaraan
-  durasi         Int
-  total          Int
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-}
-
-enum JenisKendaraan {
+enum jenis_kendaraan {
   roda2
   roda4
+}
+
+model Parkir {
+  id              Int             @id @default(autoincrement())
+  plat_nomor      String          @unique
+  jenis_kendaraan jenis_kendaraan
+  durasi          Int
+  total_biaya     Int             @default(0)
+  created_at      DateTime        @default(now())
 }

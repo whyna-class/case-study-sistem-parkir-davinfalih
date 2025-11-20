@@ -26,13 +26,13 @@ export class ParkirService {
     const data = await this.prisma.parkir.create({
       data: {
         ...dto,
-        total,
+        total_biaya: total,
       },
     })
 
     return {
       success: true,
-      message: 'Data Parkir berhasil di tambahkan',
+      message: 'Parking Data added successfully',
       data,
     }
   }
@@ -61,14 +61,14 @@ export class ParkirService {
       where,
       skip,
       take: Number(limit),
-      orderBy: { createdAt: 'desc' },
+      orderBy: { created_at: 'desc' },
     });
 
     const total = await this.prisma.parkir.count({ where });
 
     return {
       success: true,
-      message: 'Data Parkir berhasil di ambil',
+      message: 'Parking Data successfully retrieved',
       data,
       meta: {
         page: Number(page),
@@ -89,7 +89,7 @@ export class ParkirService {
     }
     return {
       success: true,
-      message: 'Data Parkir berhasil di ambil',
+      message: 'Parking Data successfully retrieved',
       data,
     }
   }
@@ -97,13 +97,13 @@ export class ParkirService {
 
   async totalPendapatan() {
     const total = await this.prisma.parkir.aggregate({
-      _sum: { total: true },
+      _sum: { total_biaya: true },
     });
 
     return {
       success: true,
-      message: 'Total pendapatan berhasil dihitung',
-      totalPendapatan: total._sum.total ?? 0,
+      message: 'Total revenue successfully calculated',
+      totalPendapatan: total._sum.total_biaya ?? 0,
     }
   }
 
@@ -117,7 +117,7 @@ export class ParkirService {
     }
 
     // Menghitung ulang total tarif setelah di update
-    let total = existing.total;
+    let total = existing.total_biaya;
 
     if (dto.durasi) {
       const tarifJamPertama =
@@ -136,13 +136,13 @@ export class ParkirService {
       where: { id },
       data: {
         ...dto,
-        total,
+        total_biaya: total,
       },
     });
 
     return {
       success: true,
-      message: 'Data Parkir berhasil di update',
+      message: 'Parking Data successfully updated',
       data,
     };
   }
@@ -153,7 +153,7 @@ export class ParkirService {
     });
 
     if (!existing) {
-      throw new NotFoundException(`Data Parkir dengan ID ${id} tidak ditemukan`);
+      throw new NotFoundException(`Parking Data with ID ${id} not found`);
     }
 
     await this.prisma.parkir.delete({
@@ -162,7 +162,7 @@ export class ParkirService {
 
     return {
       success: true,
-      message: 'Data Parkir berhasil di hapus',
+      message: 'Parking data successfully deleted',
     };
   }
 }

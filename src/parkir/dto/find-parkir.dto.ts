@@ -1,15 +1,15 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { JenisKendaraan } from '@prisma/client';
+import { jenis_kendaraan } from '@prisma/client';
 
-export class FindParkirDto {
+export class  FindParkirDto {
     @IsOptional()
     @IsString()
     search?: string;
 
     @IsOptional()
-    @IsEnum(JenisKendaraan)
-    jenis_kendaraan?: JenisKendaraan;
+    @IsEnum(jenis_kendaraan)
+    jenis_kendaraan?: jenis_kendaraan;
 
     @IsOptional()
     @Transform(({ value }) => parseInt(value, 10))

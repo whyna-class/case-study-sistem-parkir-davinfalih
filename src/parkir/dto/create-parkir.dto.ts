@@ -1,18 +1,20 @@
-import { IsEnum, IsInt, IsNotEmpty, IsString } from 'class-validator';
-import { Transform } from 'class-transformer';
-import { JenisKendaraan } from '@prisma/client';
+import {jenis_kendaraan} from '@prisma/client';
+import { IsEnum, IsInt, IsOptional, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateParkirDto {
-    @IsNotEmpty()
     @IsString()
+    @IsNotEmpty()
     plat_nomor: string;
 
+    @IsNumber()
     @IsNotEmpty()
-    @IsEnum(JenisKendaraan)
-    jenis_kendaraan: JenisKendaraan;
-
-    @IsInt()
-    @Transform(({ value }) => parseInt(value, 10))
-    @IsInt()
     durasi: number;
+
+
+    @IsEnum(['roda2', 'roda4'])
+    @IsNotEmpty()
+    jenis_kendaraan: jenis_kendaraan;
+
+    @IsOptional()
+    total_biaya: number;
 }

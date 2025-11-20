@@ -1,100 +1,95 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/1PLm_ov-)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=21735777&assignment_repo_type=AssignmentRepo)
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🚘 Parking Management API — NestJS x Prisma x MySQL
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API ini dirancang untuk mengelola aktivitas parkir kendaraan secara efisien. Mulai dari mencatat kendaraan masuk, menghitung tarif otomatis, mencari data berdasarkan filter tertentu, hingga merekap total pemasukan parkiran.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
+## ⭐ Fitur yang Tersedia
 
-## Description
+* CRUD data parkir (Create, Read, Update, Delete)
+* Perhitungan tarif otomatis berdasarkan lama parkir
+* Pencarian data menggunakan search, filter, dan pagination
+* Rekap total pendapatan parkiran
+* Terintegrasi dengan NestJS, Prisma ORM, dan MySQL
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
+## 🛠️ Teknologi yang Digunakan
 
-## Project setup
+* **NestJS** — Framework backend modular & scalable
+* **Prisma ORM** — Query database cepat & type-safe
+* **MySQL** — Penyimpanan data
+* **Postman** — Testing endpoint API
 
-```bash
-$ npm install
+---
+# 🧩 Struktur Data (Schema Prisma)
+
+```prisma
+model Parkir {
+  id              Int              @id @default(autoincrement())
+  plat_nomor      String
+  jenis_kendaraan JenisKendaraan
+  durasi          Int
+  totalTarif      Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+enum JenisKendaraan {
+  roda2
+  roda4
+}
 ```
+# 📡 Endpoint API
 
-## Compile and run the project
+🔵 1. Tambah Data Parkir
 
-```bash
-# development
-$ npm run start
+POST /parkir
 
-# watch mode
-$ npm run start:dev
+Menambahkan data parkir baru, sekaligus menghitung tarif otomatis.
 
-# production mode
-$ npm run start:prod
-```
+🟢 2. Ambil Semua Data Parkir
 
-## Run tests
+GET /parkir
 
-```bash
-# unit tests
-$ npm run test
+Mendukung:
 
-# e2e tests
-$ npm run test:e2e
+Search plat nomor
 
-# test coverage
-$ npm run test:cov
-```
+Filter jenis kendaraan
 
-## Deployment
+Pagination (page & limit)
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+🟡 3. Ambil Data Berdasarkan ID
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+GET /parkir/:id
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+Menampilkan detail satu data parkiran.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+4. Update Data Parkir
 
-## Resources
+PATCH /parkir/:id
 
-Check out a few resources that may come in handy when working with NestJS:
+Memperbarui data tertentu dan menghitung ulang total tarif jika durasi berubah.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+🔴 5. Hapus Data Parkir
 
-## Support
+DELETE /parkir/:id
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Menghapus data berdasarkan ID.
 
-## Stay in touch
+🟣 6. Ambil Total Pendapatan
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+GET /parkir/total/pendapatan
 
-## License
+Menjumlahkan seluruh tarif parkir yang telah masuk.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+🟩 Ringkasan Akhir
+
+API ini cocok untuk belajar backend modern menggunakan:
+
+NestJS sebagai arsitektur modular,
+
+Prisma ORM untuk akses database elegan dan aman,
+
+MySQL sebagai penyimpanan data.
+
+Fitur CRUD, tarif otomatis, pencarian, filtering, pagination, dan laporan pendapatan membuat API ini cukup lengkap untuk project sederhana maupun pengembangan lanjut.
